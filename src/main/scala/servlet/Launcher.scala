@@ -10,9 +10,9 @@ object Launcher {
   def main(args: Array[String]): Unit = {
     val port = sys.env.get("PORT") match {
       case Some(portNumber) =>
-        Try(portNumber.toInt).getOrElse(8080)
+        Try(portNumber.toInt).getOrElse(8090)
       case None =>
-        8080
+        8090
     }
 
     val server = new Server(port)

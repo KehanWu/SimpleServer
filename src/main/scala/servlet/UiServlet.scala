@@ -11,7 +11,6 @@ class UiServlet extends ScalatraServlet {
   val healthMessage =
     """{
       |"Message" : "Kehan's Server is alive."
-      |
       |}""".stripMargin
 
 
