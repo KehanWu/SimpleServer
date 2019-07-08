@@ -3,6 +3,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
+import servlet.RootServlet
 
 import scala.util.Try
 
@@ -14,17 +15,11 @@ object SimpleServer {
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
 
-    val route =
-      path("hello") {
-        get {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say Love U to 姚雨惟</h1>"))
-        }
-      }
+    val bindingFuture = Http().bindAndHandle((new RootServlet).routes,
+      "0.0.0.0",
+      Try { sys.env("PORT").toInt.abs }.getOrElse(8080))
 
-    val bindingFuture = Http().bindAndHandle(route, "0.0.0.0", Try { sys.env("PORT").toInt.abs }.getOrElse(8080))
-
-    println(s"Server online at http://localhost:8080/")
-
+    println("Server running ...")
   }
 
 }
