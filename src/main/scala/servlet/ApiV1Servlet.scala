@@ -4,7 +4,7 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import com.typesafe.scalalogging.Logger
-import models.{Comment, JsonSupport, TestMessage}
+import models.{Comment, JsonSupport}
 import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport._
 import org.json4s.jackson
 
@@ -13,6 +13,8 @@ class ApiV1Servlet() extends JsonSupport{
 
 
   private val messageHandler = new EchoMessageHandler("echo")
+
+  private val commentHandler = new CommentHandler("comment")
 
 
   private[servlet] def home: Route = get { pathEnd {
@@ -32,7 +34,8 @@ class ApiV1Servlet() extends JsonSupport{
   def routes: Route = {
     pathPrefix("api" / "v1") {
       home ~
-      messageHandler.routes
+      messageHandler.routes ~
+      commentHandler.routes
     }
   }
 }

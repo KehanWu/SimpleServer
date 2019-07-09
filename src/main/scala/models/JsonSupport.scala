@@ -9,7 +9,6 @@ import spray.json.{DefaultJsonProtocol, JsString, JsValue, JsonFormat, _}
 
 
 case class Comment(uuid: UUID, author: String, content: String, lastModifyDate: DateTime)
-case class TestMessage(content: String)
 
 trait JsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
 
@@ -30,5 +29,4 @@ trait JsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
   }
 
   implicit val commentFormat = jsonFormat4(Comment)
-  implicit val messageFormat = jsonFormat1(TestMessage)
 }
