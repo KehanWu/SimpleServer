@@ -1,6 +1,7 @@
 package servlet
 
 import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport._
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.Directives._
 import org.json4s.jackson.JsonMethods
@@ -23,6 +24,7 @@ class RootServlet {
   def health: Route = get { (path("__health") | path("health")) {
     complete(JsonMethods.pretty("message" -> "Congratulations! Kehan's APP is alive.") + "\n")
   }}
+
 
   def routes: Route = {
     home ~ health
