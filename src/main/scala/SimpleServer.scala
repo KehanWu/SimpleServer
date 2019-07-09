@@ -3,7 +3,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
-import servlet.RootServlet
+import servlet.{ApiV1Servlet, RootServlet}
 
 import scala.util.Try
 
@@ -15,7 +15,9 @@ object SimpleServer {
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
 
-    val bindingFuture = Http().bindAndHandle((new RootServlet).routes,
+    val bindingFuture = Http().bindAndHandle(
+      (new RootServlet).routes ~
+      new ApiV1Servlet().routes,
       "0.0.0.0",
       Try { sys.env("PORT").toInt.abs }.getOrElse(8080))
 
