@@ -7,8 +7,7 @@ import org.joda.time.DateTime
 import spray.json.{DefaultJsonProtocol, JsString, JsValue, JsonFormat, _}
 
 
-
-case class Comment(uuid: UUID, author: String, content: String, lastModifyDate: DateTime)
+case class Comment(id: UUID, author: String, content: String, lastModifyDate: DateTime)
 
 trait JsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
 
