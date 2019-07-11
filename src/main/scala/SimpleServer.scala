@@ -5,8 +5,10 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{MalformedQueryParamRejection, MalformedRequestContentRejection, RejectionHandler}
 import akka.stream.ActorMaterializer
 import com.typesafe.scalalogging.Logger
+import db.DataStorage
 import servlet.{ApiV1Servlet, RootServlet}
 
+import scala.slick.driver.PostgresDriver.simple._
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.Try
 
@@ -14,11 +16,9 @@ object SimpleServer {
   private val logger = Logger(getClass)
 
   def main(args: Array[String]) {
-
     implicit val system: ActorSystem = ActorSystem("my-system")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
     implicit val executionContext: ExecutionContextExecutor = system.dispatcher
-
 
     implicit def rejectionHandler =
       RejectionHandler.newBuilder()
@@ -31,11 +31,14 @@ object SimpleServer {
               case None    => complete(HttpResponse(StatusCodes.BadRequest))
             }
         }
-      .result()
+        .result()
+
+    val dbUrl = sys.env("POSTGRE_JDBC_URL")
+    val db = DataStorage(Database.forURL(dbUrl, driver = "org.postgresql.Driver"))
 
     val bindingFuture = Http().bindAndHandle(
       (new RootServlet).routes ~
-      new ApiV1Servlet().routes,
+      new ApiV1Servlet(db).routes,
       "0.0.0.0",
       Try { sys.env("PORT").toInt.abs }.getOrElse(8080))
 
@@ -43,3 +46,5 @@ object SimpleServer {
   }
 
 }
+
+

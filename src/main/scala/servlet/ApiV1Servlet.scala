@@ -6,15 +6,16 @@ import akka.http.scaladsl.server._
 import com.typesafe.scalalogging.Logger
 import models.{Comment, JsonSupport}
 import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport._
+import db.DataStorageTrait
 import org.json4s.jackson
 
-class ApiV1Servlet() extends JsonSupport{
+class ApiV1Servlet(db: DataStorageTrait) extends JsonSupport{
   val logger = Logger(this.getClass)
 
 
   private val messageHandler = new EchoMessageHandler("echo")
 
-  private val commentHandler = new CommentHandler("comment")
+  private val commentHandler = new CommentHandler("comment", db)
 
 
   private[servlet] def home: Route = get { pathEnd {
@@ -32,10 +33,12 @@ class ApiV1Servlet() extends JsonSupport{
 
 
   def routes: Route = {
-    pathPrefix("api" / "v1") {
-      home ~
-      messageHandler.routes ~
-      commentHandler.routes
+    logRequestResult("SimpleServer-API-v1-request") {
+      pathPrefix("api" / "v1") {
+        home ~
+          messageHandler.routes ~
+          commentHandler.routes
+      }
     }
   }
 }
