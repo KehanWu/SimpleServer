@@ -1,8 +1,8 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.{HttpEntity, HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.{MalformedQueryParamRejection, MalformedRequestContentRejection, RejectionHandler}
+import akka.http.scaladsl.server.{ExceptionHandler, MalformedQueryParamRejection, MalformedRequestContentRejection, RejectionHandler}
 import akka.stream.ActorMaterializer
 import com.typesafe.scalalogging.Logger
 import db.DataStorage
@@ -20,7 +20,7 @@ object SimpleServer {
     implicit val materializer: ActorMaterializer = ActorMaterializer()
     implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-    implicit def rejectionHandler =
+    implicit def rejectionHandler: RejectionHandler =
       RejectionHandler.newBuilder()
         .handleNotFound(complete(StatusCodes.NotFound, "Oh man, what you are looking for is long gone."))
         .handle {

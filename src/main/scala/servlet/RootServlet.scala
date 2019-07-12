@@ -1,7 +1,6 @@
 package servlet
 
 import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport._
-import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.Directives._
 import org.json4s.jackson.JsonMethods

@@ -14,8 +14,8 @@ class EchoMessageHandler(urlPathHead: String) extends JsonSupport {
 
 
   private def echoMessage(): Route = post {
-    (path(urlPathHead) & extractClientIP & extractRequestContext & entity(as[JsValue]) ) {
-      case (ip, requstContext, json) =>
+    (path(urlPathHead) & extractClientIP & entity(as[JsValue]) ) {
+      case (ip, json) =>
         logger.info(s"IP is $ip, JsonBody is: $json")
         complete(HttpResponse(status = StatusCodes.OK, entity = HttpEntity(json.toString)))
     }

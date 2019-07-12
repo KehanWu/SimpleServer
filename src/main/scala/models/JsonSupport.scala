@@ -7,7 +7,7 @@ import org.joda.time.DateTime
 import spray.json.{DefaultJsonProtocol, JsString, JsValue, JsonFormat, _}
 
 
-case class Comment(id: UUID, author: String, content: String, lastModifyDate: DateTime)
+case class AuthorContentPair(author: String, content: String)
 
 trait JsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
 
@@ -27,5 +27,5 @@ trait JsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
     }
   }
 
-  implicit val commentFormat = jsonFormat4(Comment)
+  implicit val authorContentFormat = jsonFormat2(AuthorContentPair)
 }

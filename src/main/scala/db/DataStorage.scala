@@ -2,7 +2,8 @@ package db
 
 import akka.Done
 import com.typesafe.scalalogging.Logger
-import models.Comment
+import db.postgre.{Comment, CommentsTable}
+import servlet.{ApiV1ServletError, PostgreError}
 
 import scala.slick.driver.PostgresDriver.backend.DatabaseDef
 import scala.slick.driver.PostgresDriver.simple._
@@ -11,16 +12,17 @@ import scala.util.Try
 class DataStorage(postgreDef: DatabaseDef) extends DataStorageTrait {
   private val logger = Logger(getClass)
 
-  override def insertCommentViaID(comment: Comment): Done = postgreDef withSession {
+  override def insertComment(comment: Comment): Either[PostgreError, Done] = postgreDef withSession {
     implicit session =>
       Try {
         val comments = TableQuery[CommentsTable]
         comments.insert(comment)
+        Right(Done)
       }.recover {
         case e: Exception =>
-          logger.info(s"An exception happened when retrieve comment ID: ${comment.id} from Postgres. ${e.getMessage}")
-      }
-      Done
+          logger.warn(s"Faild to insert comment $comment to Postgres due to ${e.getMessage}")
+          Left(PostgreError(e, s"Failed to insert comment $comment"))
+      }.get
   }
 }
 
