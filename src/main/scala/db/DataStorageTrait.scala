@@ -1,8 +1,10 @@
 package db
 
 import akka.Done
-import models.Comment
+import db.postgre.Comment
+import servlet.PostgreError
+
 
 trait DataStorageTrait {
-  def insertCommentViaID(comment: Comment): Done
+  def insertComment(comment: Comment): Either[PostgreError, Done]
 }

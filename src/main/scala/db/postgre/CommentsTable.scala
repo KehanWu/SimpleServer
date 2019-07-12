@@ -1,21 +1,21 @@
-package db
+package db.postgre
 
 import java.util.UUID
 
-import models.Comment
 import org.joda.time.DateTime
 
 import scala.slick.lifted.Tag
 import scala.slick.driver.PostgresDriver.simple._
 import com.github.tototoshi.slick.PostgresJodaSupport._
 
+case class Comment(id: UUID, author: String, content: String, lastModifyDate: DateTime)
 
 class CommentsTable(tag: Tag) extends Table[Comment](tag, "comments") {
 
   def id = column[UUID]("id")
   def author = column[String]("author")
   def content = column[String]("content")
-  def lastModifyDate = column[DateTime]("lastmodifydate")
-  def * = (id, author, content, lastModifyDate) <>(Comment.tupled, Comment.unapply)
+  def created = column[DateTime]("created")
+  def * = (id, author, content, created) <>(Comment.tupled, Comment.unapply)
 
 }
