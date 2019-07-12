@@ -28,13 +28,22 @@ class CommentHandler(urlPathHead: String, db: DataStorageTrait) extends JsonSupp
           case Right(_) => complete(HttpResponse(status = StatusCodes.OK, entity = HttpEntity(s"Insert: $comment successfully.")))
         }
     }
-  } ~ get {
-    parameter('id.as[String]) { id =>
-      complete(s"Searching comment with id $id.")
-    }
-    complete("Searching for all comments.")
   }
 
-  def routes: Route = submitComment()
+  private def getcomment(): Route = pathPrefix(urlPathHead) {
+    pathEnd {
+      get {
+        complete("Path end.")
+      }
+    } ~ path("123") {
+      get {
+        complete("123")
+      }
+    }
+
+
+  }
+
+  def routes: Route = submitComment() ~ getcomment()
 
 }

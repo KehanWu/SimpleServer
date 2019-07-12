@@ -12,7 +12,7 @@ case class Comment(id: UUID, author: String, content: String, lastModifyDate: Da
 
 class CommentsTable(tag: Tag) extends Table[Comment](tag, "comments") {
 
-  def id = column[UUID]("id")
+  def id = column[UUID]("id", O.PrimaryKey)
   def author = column[String]("author")
   def content = column[String]("content")
   def created = column[DateTime]("created")
