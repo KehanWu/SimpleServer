@@ -29,10 +29,13 @@ class CommentHandler(urlPathHead: String, db: DataStorageTrait) extends JsonSupp
         }
     }
   } ~ get {
-    parameter('id.as[String]) { id =>
-      complete(s"Searching comment with id $id.")
+    parameter('id.?) { id => {
+      id match {
+        case Some(commentId) => complete(s"Searching for comment with ID: $commentId.")
+        case _ => complete("No id provided, search for all comments.")
+      }
     }
-    complete("Searching for all comments.")
+    }
   }
 
   def routes: Route = submitComment()

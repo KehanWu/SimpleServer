@@ -9,6 +9,7 @@ val SprayJsonVersion = "1.3.5"
 val SlickVersion = "2.1.0"
 val SlickJodaMapperVersion = "1.2.0"
 val PlayVersion = "2.7.1"
+val ScalatestVersion = "3.0.8"
 
 resolvers ++= Seq(
   Classpaths.typesafeReleases
@@ -19,6 +20,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-xml" % AkkaHttpVersion,
   "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
   "com.typesafe.akka" %% "akka-stream" % "2.5.19",
+  "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.19",
+  "com.typesafe.akka" %% "akka-http-testkit" % AkkaHttpVersion,
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
   "com.typesafe.play" %% "play-json" % PlayVersion,
   "org.json4s" % "json4s-jackson_2.11" % "3.4.1",
@@ -28,8 +31,10 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
   "com.typesafe.slick" %% "slick" % SlickVersion,
-  "com.github.tototoshi" %% "slick-joda-mapper" % SlickJodaMapperVersion
-  
+  "com.github.tototoshi" %% "slick-joda-mapper" % SlickJodaMapperVersion,
+  "org.scalatest" %% "scalatest" % ScalatestVersion  % "test",
+  "org.scalamock" %% "scalamock" % "4.1.0" % "test"
+
 )
 
 enablePlugins(JavaAppPackaging)
