@@ -8,7 +8,11 @@ import scala.slick.lifted.Tag
 import scala.slick.driver.PostgresDriver.simple._
 import com.github.tototoshi.slick.PostgresJodaSupport._
 
-case class Comment(id: UUID, author: String, content: String, lastModifyDate: DateTime)
+case class Comment(id: UUID, author: String, content: String, lastModifyDate: DateTime) {
+  override def toString: String = {
+    s"Comment($id, $author, $content, $lastModifyDate)"
+  }
+}
 
 class CommentsTable(tag: Tag) extends Table[Comment](tag, "comments") {
 
